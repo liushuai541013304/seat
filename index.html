@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+	<meta name="renderer" content="webkit">
+	<meta name="robots" content="noindex,nofollow"> 
+	<meta name="format-detection" content="telephone=no" />
+	<meta content="email=no" name="format-detection" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	<link rel="stylesheet" href="css/index.css"/>
+	<title>选座</title>
+</head>
+<body>
+	<h1>座位</h1>
+	<div id="content">
+		<div id="zoom">
+			<div id="Dom"></div>
+		</div>
+		<div class="lf">
+			<div id="lf"></div>
+		</div>
+		<div class="pTop">
+			<div id="pTop"></div>
+		</div>
+	</div>
+</body>
+<script>
+var zoomDom=document.getElementById('zoom');
+var zoomParnet=document.getElementById('Dom');
+var spanDom=document.getElementsByTagName('span');
+
+//画座位及其坐标并初始化(放大)
+demo('Dom','lf','pTop',29,29);
+function demo(parnetDom,posiLf,posiBt,low,cole){
+	let spanCteateDom,divCteateDom,spanText,iCteateDom,bCteateDom;
+	let Dom=document.getElementById(parnetDom);
+	let posiLeft=document.getElementById(posiLf);
+	let posipTop=document.getElementById(posiBt);
+	for(let i=0;i<=low;i++){
+		divCteateDom=document.createElement('div');
+		iCteateDom=document.createElement('i');
+		Dom.appendChild(divCteateDom);
+		posiLeft.appendChild(iCteateDom);
+		posiLeft.childNodes[i].innerText=(i+1);
+		for(let j=0;j<=cole;j++){
+			if(i == 0){
+				bCteateDom=document.createElement('b');
+				posipTop.appendChild(bCteateDom);
+				posipTop.childNodes[j].innerText=(j+1);
+			}
+			spanCteateDom=document.createElement('span');
+			Dom.childNodes[i].appendChild(spanCteateDom);
+		}
+	}
+
+	let spanDomWidth=spanDom[0].offsetWidth+'px';
+	for(let i=0,spanDomLen=spanDom.length ; i<spanDomLen ; i++){
+	    spanDom[i].index = i;
+	    spanDom[i].addEventListener('click',function(){
+		    if(spanDom[i].getAttribute('class') == 'on'){
+		        spanDom[i].removeAttribute('class');
+		    }else{
+		    	spanDom[i].setAttribute('class','on');
+		    }
+		});
+	}
+	let zoomParnetWidth=zoomParnet.offsetWidth;
+	let zoomParnetHeight=zoomParnet.offsetHeight;
+	let scaler=0;
+	var timer=setInterval(function(){
+			scaler+=40;
+			let spanDomWidth=spanDom[0].offsetWidth+'px';
+			zoomParnet.style.width=zoomParnetWidth+scaler+'px';
+			zoomDom.scrollLeft=scaler/2;
+			posiLeft.style.height=zoomParnet.offsetHeight*1.001+'px'; 
+			posipTop.style.width=zoomParnetWidth*1.01+scaler+'px';
+			if(scaler>=300){
+				clearInterval(timer);
+			}
+		},33);
+}
+
+//座位表滑动时，坐标相应变动
+var posiLf=document.getElementById('lf');
+var posibt=document.getElementById('pTop');
+zoomDom.onscroll=function(){
+	let scrLf,scrTop;
+	scrTop=zoomDom.scrollTop;
+	scrLf=zoomDom.scrollLeft;
+	posiLf.style.marginTop=-(scrTop)+'px';
+	posibt.style.marginLeft=-(scrLf)+'px';
+}
+
+//座位表缩放
+var clientXScaler,clientYScaler;
+var bodyDom=document.body.offsetWidth;
+var zoomDomScr=zoomDom.scrollLeft;
+zoomParnet.addEventListener('touchstart',function(e){
+	if(event.touches.length == 2){
+		var zoomParnetWidthT=document.getElementById('Dom').offsetWidth;
+		clientXScaler=Math.abs(event.touches[0].clientX-event.touches[1].clientX);
+		clientYScaler=Math.abs(event.touches[0].clientY-event.touches[1].clientY);
+		zoomParnet.addEventListener('touchmove',function(e){
+			if(event.touches.length == 2){	
+				clientXScalerT=Math.abs(event.touches[0].clientX-event.touches[1].clientX);
+				clientYScalerT=Math.abs(event.touches[0].clientY-event.touches[1].clientY);
+				let scalerT;
+				if(clientXScaler < clientYScaler){
+					scalerT=-((clientXScalerT-clientXScaler)-(clientYScalerT-clientYScaler));					
+				}else{
+					scalerT=-((clientYScalerT-clientYScaler)-(clientXScalerT-clientXScaler));					
+				}
+				if(zoomParnetWidthT+scalerT*3 < bodyDom*0.94){
+					anWidth=bodyDom*0.94;
+				}else if(zoomParnetWidthT+scalerT*3 > bodyDom*2.5){
+					anWidth=bodyDom*2.5;
+				}else{
+					anWidth=zoomParnetWidthT+scalerT*3;
+				};
+				
+				document.getElementById('Dom').style.width=anWidth+'px';
+				zoomDom.scrollLeft=zoomDomScr+scalerT/1.5;
+				
+				posiLf.style.height=zoomParnet.offsetHeight*1.001+'px'; 
+				posibt.style.width=anWidth+'px';
+			}
+		});
+	}
+});	
+</script>
+</html>
