@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<meta name="renderer" content="webkit">
-	<meta name="robots" content="noindex,nofollow"> 
+	<meta name="robots" content="noindex,nofolrow"> 
 	<meta name="format-detection" content="telephone=no" />
 	<meta content="email=no" name="format-detection" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -34,12 +34,12 @@ var spanDom=document.getElementsByTagName('span');
 
 //画座位及其坐标并初始化(放大)
 demo('Dom','lf','pTop',29,29);
-function demo(parnetDom,posiLf,posiBt,low,cole){
+function demo(parnetDom,posiLf,posiBt,row,cole){
 	let spanCteateDom,divCteateDom,spanText,iCteateDom,bCteateDom;
 	let Dom=document.getElementById(parnetDom);
 	let posiLeft=document.getElementById(posiLf);
 	let posipTop=document.getElementById(posiBt);
-	for(let i=0;i<=low;i++){
+	for(let i=0;i<=row;i++){
 		divCteateDom=document.createElement('div');
 		iCteateDom=document.createElement('i');
 		Dom.appendChild(divCteateDom);
