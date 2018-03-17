@@ -56,9 +56,12 @@ function demo(parnetDom,posiLf,posiBt,low,cole){
 		}
 	}
 
+	let zoomParnetWidth=zoomParnet.offsetWidth;
 	let spanDomWidth=spanDom[0].offsetWidth+'px';
+	let spanDomHeight=100/cole - 0.6+'%';
 	for(let i=0,spanDomLen=spanDom.length ; i<spanDomLen ; i++){
 	    spanDom[i].index = i;
+		spanDom[i].style.paddingTop=spanDomHeight;
 	    spanDom[i].addEventListener('click',function(){
 		    if(spanDom[i].getAttribute('class') == 'on'){
 		        spanDom[i].removeAttribute('class');
@@ -67,7 +70,6 @@ function demo(parnetDom,posiLf,posiBt,low,cole){
 		    }
 		});
 	}
-	let zoomParnetWidth=zoomParnet.offsetWidth;
 	let zoomParnetHeight=zoomParnet.offsetHeight;
 	let scaler=0;
 	var timer=setInterval(function(){
